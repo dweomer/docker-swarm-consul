@@ -1,4 +1,4 @@
-# Toward a Production-Ready Docker Swarm Cluster with Consul
+# [Toward a Production-Ready Docker Swarm Cluster with Consul] (https://medium.com/@dweomer/toward-a-production-ready-docker-swarm-cluster-with-consul-9ecd36533bb8)
 > Wherein I explore the requirements of, and develop a repeatable process for, standing up a moderately opinionated, production-ready Docker cluster using the community standard Engine, Machine, Swarm and Compose. HashiCorp Consul will be used as the key-value store for Swarm as well as providing a common discovery mechanism across all nodes.
 
 ## Guiding Principles
@@ -26,7 +26,6 @@ export DIGITALOCEAN_ACCESS_TOKEN="my-super-cool-access-token-hash"
 ```
 This will be picked up automatically by [drivers/digitalocean.env](drivers/digitalocean.env) and sourced. If no such file exists you will want to otherwise setup an environment variable named `DIGITALOCEAN_ACCESS_TOKEN` before these humble scripts will work.
 
-## Read the Article!
-https://medium.com/@dweomer/toward-a-production-ready-docker-swarm-cluster-with-consul-9ecd36533bb8
+--
 
 ![A Docker Swarm cluster leveraging Consul](media/docker-consul-swarm-with-edge.png)
