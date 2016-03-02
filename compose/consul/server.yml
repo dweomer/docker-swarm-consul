@@ -1,0 +1,15 @@
+server:
+  command: -dc ${MACHINE_DATACENTER} -server -bootstrap-expect 3 -domain ${MACHINE_DOMAIN}. -advertise ${MACHINE_CLUSTER_PARTICIPANT_ADDRESS} -retry-interval 10s -retry-join ${MACHINE_CLUSTER_REPLICANT_ADDRESS_1} -retry-join ${MACHINE_CLUSTER_REPLICANT_ADDRESS_2}
+  container_name: consul-agent-server
+  environment:
+  - "GOMAXPROCS=2"
+  image: gliderlabs/consul-server:0.6
+  net: host
+  restart: always
+  volumes:
+  - "consul-agent-${MACHINE_NAME}:/data"
+  - "/etc/consul/consul.json:/config/consul.json:ro"
+  - "/etc/docker/ca.pem:/certs/ca.pem:ro"
+  - "/etc/docker/server.pem:/certs/server.pem:ro"
+  - "/etc/docker/server-key.pem:/certs/server-key.pem:ro"
+  - "/var/run/docker.sock:/var/run/docker.sock"
