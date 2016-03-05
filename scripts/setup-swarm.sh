@@ -35,7 +35,7 @@ docker_machine_recreate() {
     export MACHINE_DATE="$(date '+%Y%m%d-%H%M%S')"
 
     echo "### ${MACHINE_NAME} (MACHINE_*) >>>"
-    declare -p $(declare -p | egrep -v 'declare[ ][-][-][ ]' | awk '{print $3}' | sed -e 's/[=].*//g' | sort | egrep '^MACHINE') | sed -e 's/^/# /g'
+    declare -p | egrep '^MACHINE|[ ]MACHINE_' | sed -e 's/^/# /g'
     echo "### ${MACHINE_NAME} (MACHINE_*) <<<"
 
     if [ ! -d ${MACHINE_PATH} ]; then
@@ -82,7 +82,7 @@ docker_machine_recreate() {
     eval $(docker-machine env ${MACHINE_NAME})
 
     echo "### ${MACHINE_NAME} (DOCKER_*) >>>"
-    declare -p $(declare -p | egrep -v 'declare[ ][-][-][ ]' | awk '{print $3}' | sed -e 's/[=].*//g' | sort | egrep '^DOCKER') | sed -e 's/^/# /g'
+    declare -p | egrep '^DOCKER|[ ]DOCKER_' | sed -e 's/^/# /g'
     echo "### ${MACHINE_NAME} (DOCKER_*) <<<"
 
     echo "### ${MACHINE_NAME} (docker-compose -f ${MACHINE_TYPE}.yml) >>>"
@@ -112,6 +112,10 @@ for i in $(seq 0 $((${#MACHINE_NAMES[*]}-1))); do
     export MACHINE_NODE_NAME="${MACHINE_NAME}.node.${MACHINE_DOMAIN}"
     export MACHINE_PUBLIC_ADDRESS=${MACHINE_PUBLIC_ADDRESSES[${i}]}
     export MACHINE_CLUSTER_PARTICIPANT_ADDRESS=${MACHINE_CLUSTER_ADDRESSES[${i}]}
+
+    if [ -z ${MACHINE_SSH_USER} ]; then
+        export MACHINE_SSH_USER=$(docker-machine inspect --format '{{.Driver.SSHUser}}' ${MACHINE_NODE_NAME})
+    fi
 
     if [ -f ${MACHINE_STORAGE_PATH}/machines/${MACHINE_NODE_NAME}/id_rsa ]; then
         export MACHINE_SSH_KEY="${MACHINE_STORAGE_PATH}/machines/${MACHINE_NODE_NAME}/id_rsa"
